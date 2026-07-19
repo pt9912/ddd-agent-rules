@@ -20,6 +20,15 @@ DDD gezielt einzusetzen und Muster nicht als Dekoration einzuführen.
 False positive: Der Agent bläht eine triviale CRUD-Ergänzung mit DDD-Maschinerie
 auf, weil das Projekt DDD verwendet.
 
+## Referenzlösung (Prüfmaßstab)
+
+Eine korrekte Antwort erfüllt:
+
+- **[ja]** Ein einfaches optionales Notiz-Feld/Attribut (datenorientiert).
+- **[nein]** Ein Domänenereignis für die Notizänderung.
+- **[nein]** Ein neues Aggregat, ein Domänendienst oder ein neuer Bounded Context nur für die Notiz.
+- **[ja]** Begründung, dass keine Invariante und kein Zustandsübergang betroffen ist (DDD-CORE-001).
+
 ## Akzeptanzkriterien (maschinell)
 
 ```grading

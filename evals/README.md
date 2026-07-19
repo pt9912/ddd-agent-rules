@@ -34,6 +34,11 @@ geprüft.
   `doc-check`; der Referenztest steckt im Image, nie im Ziel-Repo.
 - `Makefile` — die Eval-Ziele (`init`, `run`, `grade`, `image`, `verify`),
   getrennt vom Wurzel-`Makefile`, das nur dieses Regelwerk-Repo validiert.
+- `consensus.sh` — führt die Verifikations-Ebenen (ausführbar, Judge-Panel,
+  Signal-Assert) zu einem Verdikt mit Konfidenz zusammen (siehe Verifikation).
+
+Jedes Szenario trägt außerdem eine `## Referenzlösung (Prüfmaßstab)` — objektive
+Ja/Nein-Fakten, gegen die alle Ebenen messen.
 - `init-fixture.sh` — setzt aus dem Regelwerk und `fixture/` ein Ziel-Repo im
   angegebenen Verzeichnis zusammen. Das Regelwerk landet gebündelt unter
   `.ddd-harness/` (dokumentierter Mindestumfang: `AGENTS.md` + `rules/` +
@@ -120,6 +125,32 @@ Ein Lauf zu Szenario 001 (3× mit Regelwerk, 2× ohne, plus LLM-Judge) hat gezei
   Regel-ID-Nachvollziehbarkeit und das Verweigern der wörtlich
   grenzverletzenden Umsetzung. Aussagekräftiger werden dafür Szenarien, bei
   denen das Kernverhalten selbst kippt (002 Readiness-Gating, 004 Über-Anwendung).
+
+## Verifikation (kombiniert)
+
+Kein einzelnes Signal ist die Wahrheit. Das Verdikt entsteht durch **Triangulation**
+dreier Ebenen gegen die Referenzrubrik des Szenarios:
+
+1. **Ausführbare Wahrheit** (Ebene 1, maßgeblich wo vorhanden) — `make -C evals
+   verify` kompiliert die vom Agenten implementierte Änderung gegen einen
+   versteckten Referenztest. Objektiv, nur für code-erzeugende Szenarien.
+2. **Referenzrubrik** (Ebene 2) — der Abschnitt „Referenzlösung (Prüfmaßstab)":
+   objektive Ja/Nein-Fakten, gegen die Signal-Assert und Judges messen.
+3. **Adversariales Judge-Panel** (Ebene 3) — mehrere unabhängige Judges
+   (`prompts/judge.md`, mit Widerlegungsauftrag) bewerten dieselbe Antwort;
+   die Mehrheit entscheidet, wo kein Test greift.
+
+`consensus.sh` führt sie zusammen: der ausführbare Test ist maßgeblich, sonst die
+Panel-Mehrheit; `grade.sh` (Signal-Assert) dient als Kreuzprüfung.
+
+```sh
+# je Antwort: ausführbar (bei Code-Szenarien) + N Judge-Stimmen + Signal-Assert
+./evals/consensus.sh --exec PASS --judge PASS --judge PASS --judge FAIL --signal PASS
+```
+
+Stimmen alle vorhandenen Ebenen überein → Konfidenz **hoch**. Weichen sie ab →
+**PRÜFEN** (Exit 3). Divergenzen sind kein Ärgernis, sondern der Prüfpfad — genau
+dort steckt der Erkenntnisgewinn (so wurden die Signal-Assert-Schwächen gefunden).
 
 ## Warum außerhalb von `make test`
 

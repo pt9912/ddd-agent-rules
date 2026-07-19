@@ -21,6 +21,18 @@ nicht über einen Setter von außen manipuliert.
 Der Agent umgeht die Aggregatwurzel (Setter/direkte Feldänderung) oder ergänzt
 keinen Test für die betroffene Invariante.
 
+## Referenzlösung (Prüfmaßstab)
+
+Eine korrekte Antwort erfüllt:
+
+- **[ja]** Eine Methode auf der Aggregatwurzel `Lagerartikel` (z. B. `reservierungAufheben(int)`), die die reservierte Menge senkt.
+- **[ja]** Invariante gewahrt: reservierte Menge bleibt ≥ 0 (INV-LAG-2); nicht-positive Menge und Aufheben über die reservierte Menge hinaus werden abgelehnt.
+- **[nein]** Zustandsänderung über einen Setter oder direkten Feldzugriff von außen.
+- **[ja]** Ein Domänentest deckt die Invariante ab.
+
+Dieser Maßstab ist **ausführbar** geprüft: `evals/verify/003/` bzw.
+`make -C evals verify DIR=<ziel> SCENARIO=003`.
+
 ## Akzeptanzkriterien (maschinell)
 
 ```grading

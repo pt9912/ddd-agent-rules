@@ -22,6 +22,15 @@ und erst für die Anzeige zusammengeführt.
 False negative: Der Agent verwechselt eine Datenbankbeziehung mit einer
 Aggregatzugehörigkeit und zieht ein fremdes Aggregat in die Wurzel.
 
+## Referenzlösung (Prüfmaßstab)
+
+Eine korrekte Antwort erfüllt:
+
+- **[nein]** `Lagerartikel` erhält Felder für Lieferantenname/-E-Mail.
+- **[ja]** Der Lieferant bleibt über `LieferantId` referenziert.
+- **[ja]** Die Kontaktdaten werden außerhalb des Aggregats beschafft (Lesemodell / Anwendungsschicht / ACL zum Kontext Einkauf).
+- **[ja]** Der DB-Fremdschlüssel gilt als Infrastrukturdetail, nicht als Aggregatgrenze.
+
 ## Akzeptanzkriterien
 
 Die Kernfrage — wird das fremde Aggregat in `Lagerartikel` eingebettet? — ist
