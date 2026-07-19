@@ -1,82 +1,108 @@
 # DDD-Agentenregeln
 
-Ein strukturierter Regelsatz für Code-Agenten, die Software mit Domain-Driven Design analysieren, erzeugen, prüfen und refaktorieren.
+Ein strukturierter, deutschsprachiger Regelsatz für Code-Agenten, die Software mit Domain-Driven Design analysieren, erzeugen, prüfen oder refaktorieren.
 
-Der [Dokumentindex](INHALT.md) bietet einen vollständigen thematischen Einstieg in Regeln, Hilfen, Beispiele und Projektunterlagen.
+## Was ist ddd-agent-rules?
 
-## Ziele
+`ddd-agent-rules` übersetzt DDD-Prinzipien in versionierte, verlinkte und automatisiert prüfbare Arbeitsanweisungen für Code-Agenten. Das Repository verbindet normative Regeln mit Entscheidungshilfen, Mustern, Antimustern, Prüflisten, Quellen und realistischen Beispielen.
 
-- Fachliches Verhalten bei automatisierten Codeänderungen bewahren.
-- Domänengrenzen ausdrücklich machen.
-- Aggregatinvarianten schützen.
-- Das Eindringen von Infrastrukturbelangen in das Domänenmodell verhindern.
-- Nachvollziehbare und erklärbare Agentenentscheidungen erzeugen.
-- Verbindliche Regeln von kontextabhängigen Hinweisen unterscheiden.
+Der [Dokumentindex](INHALT.md) erschließt den vollständigen Inhalt. Die wichtigsten Dokumentklassen sind:
 
-## Repository-Struktur
-
-- [AGENTS.md](AGENTS.md) — Arbeitsanweisungen für die Pflege dieses Regel-Repositorys
-- [AGENTS.target.md](AGENTS.target.md) — als `AGENTS.md` auszuliefernde Vorlage für Ziel-Repositories
-- `rules/` — normative DDD-Regeln
+- `rules/` — normative DDD-Regeln mit stabilen IDs, Priorität und Lebenszyklusstatus
 - `decisions/` — Entscheidungshilfen für mehrdeutige Modellierungsfragen
-- `patterns/` — empfohlene Implementierungsmuster
-- `anti-patterns/` — häufige Entwurfsfehler und Erkennungskriterien
-- `checklists/` — ausführbare Prüflisten
-- `examples/` — kompakte gute und schlechte Beispiele
-- `sources/` — Referenzen, Quellenangaben und Lizenzhinweise
-- `docs/` — Projektlebenszyklus und ergänzende Prozessdokumentation
+- `patterns/` und `anti-patterns/` — empfohlene Lösungen und typische Fehlentwicklungen
+- `checklists/` — ausführbare Prüflisten für Analyse, Readiness und Reviews
+- `examples/` — kompakte Beispiele und eine durchgängige B2B-Fallstudie
+- `sources/` — Referenzkatalog, Quellenangaben und Lizenzhinweise
+- `docs/` — Projektlebenszyklus und Dokumentarchitektur
 
-## Lebenszyklen
+## Was kann ich heute tun?
 
-Der [Projektlebenszyklus](docs/projektlebenszyklus.md) steuert Entwicklung, Validierung, Veröffentlichung, Wartung und Archivierung des Repositorys. Die normative Regel [DDD-Regellebenszyklus](rules/01-rule-lifecycle.md) steuert dagegen die fachliche Gültigkeit jeder einzelnen Regel. Beide Zustandsmodelle sind unabhängig; ein Übergang muss jeweils ausdrücklich dokumentiert werden.
+### Den Regelsatz in einem Ziel-Repository einsetzen
 
-## Dokumentverweise
+1. Kopiere [AGENTS.target.md](AGENTS.target.md) als `AGENTS.md` in die Wurzel des Ziel-Repositorys. Das vorhandene [AGENTS.md](AGENTS.md) gilt ausschließlich für die Pflege dieses Regel-Repositorys.
+2. Stelle mindestens `rules/` und `checklists/` dort unter denselben relativen Pfaden bereit.
+3. Ergänze die Domänendokumentation, Tests und Build-Befehle des Ziel-Repositorys als fachliche Evidenz.
+4. Lass den Code-Agenten vor einer nicht trivialen fachlichen Änderung die [Readiness-Prüfliste](checklists/agent-readiness.md) anwenden.
+5. Übernimm `decisions/`, `patterns/`, `anti-patterns/` und `examples/`, wenn der Agent auch auf die ergänzenden Hilfen zugreifen soll.
 
-Die [Referenzrichtung der Dokumentation](docs/referenzrichtung.md) ordnet Einstiegspunkte, Projektsteuerung, normative Regeln, Hilfen, Beispiele, Quellen und Historie. Entscheidungshilfen und Beispiele verweisen auf ihre maßgeblichen Regeln; Regeln verweisen nur auf stabilere Grundlagen wie den Quellenkatalog oder ausdrücklich getrennte Projektprozesse. `d-check` erzwingt diese Richtung als SDP-Matrix.
-
-## Verwendung
-
-Für Arbeiten an diesem Repository gilt [AGENTS.md](AGENTS.md). Um den Regelsatz in einem Ziel-Repository einzusetzen, kopiere [AGENTS.target.md](AGENTS.target.md) dort als `AGENTS.md` in die Wurzel und stelle mindestens `rules/` und `checklists/` unter denselben relativen Pfaden bereit.
-
-Der Agent lädt die fundamentalen Regeln einschließlich des Readiness-Gates immer und nur die zusätzlichen Regeldateien, die für die aktuelle Aufgabe relevant sind. Befunde sollten Regel-IDs nennen, zum Beispiel:
+Der Agent lädt die fundamentalen Regeln immer und ergänzt nur die Regeln, die zur Aufgabe passen. Befunde nennen stabile Regel-IDs, zum Beispiel:
 
 ```text
 Verstoß: DDD-AGG-001
 Die Entität Bestellposition wird außerhalb der Aggregatwurzel Bestellung verändert.
 ```
 
-## Normative Schlüsselwörter
+### Das Repository erkunden
 
-Die Wörter `MUSS`, `DARF NICHT`, `SOLLTE`, `SOLLTE NICHT` und `KANN` werden als normative Anforderungen verwendet.
+- Beginne beim [Dokumentindex](INHALT.md).
+- Nutze die [Domänenanalyse-Prüfliste](checklists/domain-analysis.md) für eine erste fachliche Erkundung.
+- Lies die [Fallstudie zur Bestellbestätigung](examples/realistic/bestellbestaetigung/README.md), um das Zusammenspiel von Aggregat, Freigabe, Outbox, Kontextübersetzung und Tests zu sehen.
 
-- `MUSS`: verbindlich
-- `DARF NICHT`: verboten
-- `SOLLTE`: empfohlener Standard
-- `SOLLTE NICHT`: nicht empfohlener Standard
-- `KANN`: optional oder kontextabhängig
+### Den Regelsatz lokal prüfen
 
-Jeder normative Listenpunkt in `rules/` beginnt mit einem dieser Schlüsselwörter. Verbindliche Regeln verwenden `MUSS` und `DARF NICHT`, empfohlene Regeln verwenden `SOLLTE` und `SOLLTE NICHT`. Abschnittsüberschriften sind beschreibend und überschreiben nicht das Schlüsselwort eines einzelnen Listenpunkts.
+Führe `make test` aus. Docker ist erforderlich, weil d-check reproduzierbar in einem Container ausgeführt wird.
 
-## Regelprioritäten
+## Warum ddd-agent-rules?
 
-- `mandatory` — eine Abweichung erfordert eine ausdrückliche Begründung
-- `recommended` — bevorzugter Standard mit dokumentierten Ausnahmen
-- `contextual` — abhängig von Domäne, Größenordnung und Architektur
+Code-Agenten können vorhandenen Code schnell verändern, verfügen aber nicht automatisch über das fehlende Fachwissen. Ohne ausdrückliche Leitplanken besteht die Gefahr, dass sie:
 
-## Lizenz
+- Datenbankbeziehungen mit Aggregatgrenzen verwechseln,
+- etablierte Domänensprache durch generische Begriffe ersetzen,
+- Invarianten in Handler oder Infrastruktur verschieben,
+- interne Modelle über Kontextgrenzen hinweg teilen,
+- Integrationsereignisse vor dem Commit veröffentlichen oder
+- DDD-Muster ohne nachgewiesenen fachlichen Nutzen einführen.
 
-Der offizielle und rechtlich maßgebliche englische Lizenztext steht in `LICENSE`. Eine unverbindliche deutsche Übersetzung steht in [LICENSE.de.md](LICENSE.de.md). Weitere Hinweise enthält `sources/licenses.md`.
+Der Regelsatz macht die dafür notwendigen Entscheidungen sichtbar und prüfbar. Er hilft, fachliches Verhalten zu bewahren, Kontextgrenzen zu respektieren und architektonische Änderungen in fachlichen Begriffen zu erklären. DDD wird dabei nicht mit Microservices, CQRS oder Event Sourcing gleichgesetzt.
 
-## Sprachkonvention
+## Kerngedanke
 
-Die Projektdokumentation und die menschenlesbaren Prüfmeldungen sind auf Deutsch. Stabile technische Schnittstellen bleiben unverändert, darunter Dateipfade, Regel-IDs, YAML-Schlüssel und -Werte, Make-Ziele und CLI-Optionen. Offizielle Werktitel werden für eindeutige Quellenangaben in ihrer Originalsprache wiedergegeben.
+Ein Code-Agent darf DDD nicht aus Frameworks, Tabellen oder üblichen Mustern ableiten. Er braucht ein begrenztes Modell, etablierte Sprache, bekannte Invarianten, ein klares Änderungsziel und ausführbare Verifikation.
 
-## Validierung
+```text
+Änderungsauftrag + fachliche Evidenz
+                 │
+                 ▼
+      ready | conditional | analysis-only
+                 │
+                 ▼
+Bounded Context + Modell + Invarianten
+                 │
+                 ▼
+       Änderung + passende Tests
+```
 
-Führe `make test` aus, um alle Repository-Prüfungen zu starten:
+Die normative [Readiness-Regel](rules/02-agent-readiness.md) verhindert, dass fehlende Fachregeln erfunden werden. Bei wesentlichen offenen Fragen bleibt die Arbeit auf Analyse und Klärung begrenzt.
 
-- `./scripts/validate.sh` prüft Regelmetadaten, Lebenszyklusstatus, eindeutige Regel-IDs, konsistente Modalität sowie die Übereinstimmung von Quellen-IDs und Katalog.
-- `./tests/policy-contract.sh` schützt die Entscheidungen zu Ereigniszustellung, Autorisierung, Prüfumfang, Wertobjekten und getrennten Lebenszyklen.
-- Das vom erzeugten `d-check.mk` bereitgestellte Ziel `doc-check` prüft Markdown-Links und -Anker, verlinkte DDD-Regel-IDs, die zulässige Referenzrichtung, Codepfade, Code-Spans und die Offenlegung von Host-Pfaden in einem schreibgeschützten Container ohne Netzwerk.
+Normative Regeln verwenden die Schlüsselwörter `MUSS`, `DARF NICHT`, `SOLLTE`, `SOLLTE NICHT` und `KANN`. Ihre Priorität ist `mandatory`, `recommended` oder `contextual`. Ihr Status ist unabhängig vom Zustand des Projekts:
 
-Die Include-Datei `d-check.mk` wird von d-check v0.50.0 mit `--print-mk` erzeugt. Das Projekt-`Makefile` liefert nur den geprüften Image-Digest und bindet `doc-check` in `make test` ein. `make doc-help` listet die erzeugten Ziele auf. Für `make test` ist Docker erforderlich. `make d-check-external` prüft externe HTTP-Links separat; dieses Ziel erlaubt bewusst Netzwerkzugriff und gehört nicht zur deterministischen Standardtestsuite. Siehe die [d-check-Betriebsreferenz](https://github.com/pt9912/d-check/blob/main/docs/user/operations.md).
+- Der [Projektlebenszyklus](docs/projektlebenszyklus.md) steuert Entwicklung, Validierung, Veröffentlichung, Wartung und Archivierung des Repositorys.
+- Der [DDD-Regellebenszyklus](rules/01-rule-lifecycle.md) steuert die fachliche Gültigkeit jeder einzelnen Regel.
+
+Auch die Dokumentabhängigkeiten sind gerichtet: Beispiele verweisen auf Hilfen und Regeln, Hilfen auf Regeln und Regeln auf Quellen. Die [Referenzrichtung](docs/referenzrichtung.md) verhindert, dass normative Regeln von nachgeordneten Erläuterungen abhängig werden.
+
+## Was macht es vertrauenswürdig?
+
+### Explizite und nachvollziehbare Regeln
+
+- Jede normative Regel besitzt eindeutige Metadaten, eine stabile ID, Priorität und Status.
+- Verpflichtungen, Verbote, Entscheidungskriterien und Prüfhinweise sind getrennt sichtbar.
+- Regeln verweisen über stabile Quellen-IDs auf den [Referenzkatalog](sources/references.md).
+- Entscheidungen zu Readiness, Regelstatus und Dokumentrichtung sind als überprüfbare Invarianten dokumentiert.
+
+### Automatisierte Freigabegates
+
+`make test` verbindet drei unabhängige Prüfungen:
+
+- `./scripts/validate.sh` prüft Regelmetadaten, Lebenszyklusstatus, eindeutige IDs, Modalität und Quellen-IDs.
+- `./tests/policy-contract.sh` schützt kritische fachliche und Governance-Entscheidungen vor unbeabsichtigtem Drift.
+- Das aus `d-check.mk` bereitgestellte Ziel `doc-check` prüft Markdown-Links und -Anker, Regelverweise, SDP-Referenzrichtung, Codepfade, Code-Spans und offengelegte Host-Pfade.
+
+d-check v0.50.0 wird über einen geprüften Image-Digest gepinnt und ohne Netzwerk mit schreibgeschütztem Repository-Mount ausgeführt. Externe HTTP-Links werden nur über das bewusste Netzwerkziel `make d-check-external` geprüft. Weitere Betriebsdetails beschreibt die [d-check-Betriebsreferenz](https://github.com/pt9912/d-check/blob/main/docs/user/operations.md).
+
+### Transparente Grenzen
+
+- Beispiele ersetzen keine Fachentscheidung; die Fallstudie benennt ihre Annahmen und Auslassungen.
+- Die Projektdokumentation und Prüfmeldungen sind deutsch, stabile technische Schnittstellen bleiben unverändert.
+- Der maßgebliche Lizenztext steht in `LICENSE`; eine unverbindliche deutsche Übersetzung bietet [LICENSE.de.md](LICENSE.de.md). Weitere Hinweise enthält der [Lizenzkatalog](sources/licenses.md).

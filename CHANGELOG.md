@@ -17,6 +17,7 @@
 - Den DDD-Regellebenszyklus direkt nach den Kernprinzipien eingeordnet und die übrigen Regeldateien ohne Änderung ihrer stabilen Regel-IDs neu nummeriert.
 - Eine durchgängige B2B-Fallstudie zu Aggregatinvarianten, Bestellfreigabe, transaktionaler Outbox, Kontextübersetzung, Idempotenz und den erforderlichen Domänen- und Integrationstests ergänzt.
 - Repository-spezifische Agentenanweisungen von der auslieferbaren Ziel-Repo-Vorlage getrennt und mit `DDD-READY-001` sowie einer Readiness-Prüfliste ein verbindliches Gate für fachliche Codeänderungen eingeführt.
+- Die README auf Nutzen, unmittelbar mögliche Schritte, Motivation, Kerngedanke und Vertrauensmechanismen ausgerichtet und ihre Hauptstruktur im Richtlinienvertrag abgesichert.
 
 ## 0.1.0
 

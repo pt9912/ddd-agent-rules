@@ -73,6 +73,15 @@ assert_before AGENTS.md '[rules/02-agent-readiness.md]' '[rules/03-domain-modeli
 assert_before AGENTS.target.md '[rules/01-rule-lifecycle.md]' '[rules/02-agent-readiness.md]'
 assert_before AGENTS.target.md '[rules/02-agent-readiness.md]' '[rules/03-domain-modeling.md]'
 assert_before INHALT.md '[DDD-RLC-001' '[DDD-MOD-001'
+assert_contains README.md '## Was ist ddd-agent-rules?'
+assert_contains README.md '## Was kann ich heute tun?'
+assert_contains README.md '## Warum ddd-agent-rules?'
+assert_contains README.md '## Kerngedanke'
+assert_contains README.md '## Was macht es vertrauenswürdig?'
+assert_before README.md '## Was ist ddd-agent-rules?' '## Was kann ich heute tun?'
+assert_before README.md '## Was kann ich heute tun?' '## Warum ddd-agent-rules?'
+assert_before README.md '## Warum ddd-agent-rules?' '## Kerngedanke'
+assert_before README.md '## Kerngedanke' '## Was macht es vertrauenswürdig?'
 
 if ((failures > 0)); then
     printf '\nRichtlinienvertrag mit %d Fehler(n) fehlgeschlagen.\n' "$failures" >&2
