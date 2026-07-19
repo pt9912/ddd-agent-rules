@@ -18,6 +18,15 @@ geprüft.
   sie sind der Prüfmaßstab.
 - `grade.sh` — Signal-Assert-Runner: bewertet Agenten-Antworten gegen den
   ```grading-Block eines Szenarios und meldet die Pass-Rate.
+- `prompts/` — die Wrapper-Prompts, mit denen die Agenten aufgerufen werden:
+  `runner-mit-regelwerk.md`, `runner-ohne-regelwerk.md` (Ablationsarm) und
+  `judge.md` (LLM-Judge-Rubrik). So ist ein Lauf reproduzierbar: der **Auftrag**
+  kommt aus dem Szenario, der **Wrapper** aus `prompts/`. Platzhalter:
+  `{{repo}}`, `{{aufgabe}}`, `{{ausgabe}}` (Runner) bzw. `{{szenario}}`,
+  `{{antworten}}` (Judge).
+- `run-scenario.sh` — setzt aus einer Wrapper-Vorlage, dem `## Aufgabe`-Block
+  eines Szenarios und den Zielpfaden den fertigen Agenten-Prompt zusammen
+  (Ausgabe auf stdout).
 - `init-fixture.sh` — setzt aus dem Regelwerk und `fixture/` ein Ziel-Repo im
   angegebenen Verzeichnis zusammen. Das Regelwerk landet gebündelt unter
   `.ddd-harness/` (dokumentierter Mindestumfang: `AGENTS.md` + `rules/` +
@@ -40,14 +49,21 @@ Layout des erzeugten Ziel-Repos:
 ## Ablauf
 
 ```sh
-# 1. Ziel-Repo aufsetzen (frisches Temp-Verzeichnis)
-./evals/init-fixture.sh            # oder: make eval-init
+# 1. Ziel-Repo im angegebenen Verzeichnis aufsetzen
+./evals/init-fixture.sh /pfad/zum/ziel       # oder: make eval-init DIR=/pfad/zum/ziel
 
-# 2. Einen Code-Agenten mit Arbeitsverzeichnis = Ziel-Repo starten
-#    und die "Aufgabe" eines Szenarios als Prompt geben.
+# 2. Prompt für ein Szenario zusammensetzen (Auftrag aus dem Szenario,
+#    Wrapper aus prompts/) und einem Code-Agenten im Ziel-Repo geben.
+#    Für den Ablationsarm ohne Regelwerk: --ohne-regelwerk
+./evals/run-scenario.sh evals/scenarios/001-*.md /pfad/zum/ziel /pfad/out/A-1.md
 
-# 3. Die Antwort gegen die Akzeptanzkriterien des Szenarios graden.
+# 3. Antwort(en) gegen den ```grading-Block des Szenarios graden
+./evals/grade.sh evals/scenarios/001-*.md /pfad/out/A-1.md /pfad/out/A-2.md
 ```
+
+Den `judge.md`-Prompt (Platzhalter `{{szenario}}`, `{{antworten}}`) füllt man mit
+dem Szenariopfad und der Liste der Antwortdateien und gibt ihn einem separaten
+Prüf-Agenten — er ist für semantische Fragen maßgeblich (siehe Grading).
 
 ## Szenario-Typen
 
