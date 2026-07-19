@@ -43,6 +43,7 @@ Verwende einfachere Ansätze, wenn die Domäne stabil, generisch oder hauptsäch
 - Ist das fachliche Problem komplex genug, um dieses Muster zu rechtfertigen?
 - Welche Invariante oder Entscheidung schützt der Entwurf?
 - Gibt es einen einfacheren Entwurf mit derselben fachlichen Sicherheit?
+- Reagiert etwas fachlich auf ein eingeführtes Ereignis, oder wäre es reine Dekoration oder Protokollierung?
 
 ## Quellen
 

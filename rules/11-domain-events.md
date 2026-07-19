@@ -37,10 +37,11 @@ Ein Domänenereignis SOLLTE eine bedeutsame, bereits eingetretene Tatsache darst
 - SOLLTE NICHT ein Integrationsereignis vor dem Commit der auslösenden Transaktion veröffentlichen.
 - SOLLTE NICHT unmittelbar aus einem Aggregat veröffentlichen.
 - SOLLTE NICHT ohne Infrastrukturgarantien eine Genau-einmal-Zustellung annehmen.
+- SOLLTE NICHT ein Domänenereignis allein zur Protokollierung oder Nachvollziehbarkeit einführen, ohne dass ein fachlicher Konsument oder eine Reaktion es rechtfertigt.
 
 ## Entscheidungskriterien
 
-Verwende ein Ereignis, wenn eine fachliche Tatsache in der ubiquitären Sprache bedeutsam ist und ausdrückliche entkoppelte Reaktionen, Koordination oder Nachvollziehbarkeit einen Nutzen bieten. Mehrere Reaktionen sind nicht erforderlich.
+Verwende ein Ereignis, wenn eine fachliche Tatsache in der ubiquitären Sprache bedeutsam ist und eine entkoppelte fachliche Reaktion oder Koordination sie rechtfertigt. Mehrere Reaktionen sind nicht erforderlich, aber reine Nachvollziehbarkeit oder Protokollierung rechtfertigt für sich genommen kein Domänenereignis — dafür genügen ein Lesemodell oder ein Infrastruktur-Log.
 
 ## Prüfung
 
@@ -50,6 +51,7 @@ Verwende ein Ereignis, wenn eine fachliche Tatsache in der ubiquitären Sprache 
 - Kann ein externer Empfänger eine Änderung beobachten, die später zurückgerollt wird?
 - Kann eine bestätigte Änderung ihre ausgehende Integrationsnachricht verlieren?
 - Sind Handler dort idempotent, wo es erforderlich ist?
+- Rechtfertigt ein fachlicher Konsument oder eine Reaktion dieses Ereignis, oder wäre es reine Nachvollziehbarkeit?
 
 ## Quellen
 
