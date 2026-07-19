@@ -1,5 +1,6 @@
 scan:
   roots: ["."]
+  ignore: ["evals/**"]
 
 modules: [links, anchors, ids, matrix, codepaths, spans, hostpaths]
 

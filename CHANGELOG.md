@@ -22,6 +22,7 @@
 - Normative Regeln zu Aggregat-Transaktionsgrenze, optimistischer Nebenläufigkeit, Vertragsversionierung, Outbox-Veröffentlichung und Schichtreinheit geschärft sowie Subdomäne und Bounded Context abgegrenzt.
 - Den Entscheidungsbaum um das einzelentitäre Aggregat, das Preis-Beispiel um eine Null-Prüfung und die Fallstudie um den geforderten Konfliktbefund ergänzt.
 - Die SDP-Referenzrichtung um die bislang fehlenden Kanten (Projektsteuerung→Einstieg, nachgeordnete Klassen→Quellen) vervollständigt und den Validator gegen leere Regelabschnitte sowie dateiübergreifende Quellen-Fehlzuordnung abgesichert.
+- Ein Eval-Gerüst für die Wirksamkeit des Regelwerks ergänzt: `evals/init-fixture.sh` setzt in einem angegebenen Zielverzeichnis aus `AGENTS.target.md`, dem Regelwerk und einem fiktiven Lager-Projekt ein Ziel-Repo auf; ein erstes Fallen-Szenario und eine Grading-Konvention beschreiben die Prüfung. `evals/` ist über `scan.ignore` von der deterministischen Doku-Prüfung ausgenommen.
 
 ## 0.1.0
 
