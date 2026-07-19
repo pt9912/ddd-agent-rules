@@ -3,24 +3,30 @@
 # init-fixture.sh — richtet in einem Zielverzeichnis ein Ziel-Repo ein, in dem
 # das DDD-Regelwerk gegen ein fiktives Projekt getestet werden kann.
 #
-# Es folgt exakt der dokumentierten Installation (README / AGENTS.target.md):
-#   1. AGENTS.target.md  ->  <ziel>/AGENTS.md
-#   2. rules/ + checklists/ (+ ergaenzende Hilfen) unter denselben Pfaden
-#   3. Das fiktive Projekt aus evals/fixture/ darueberlegen
+# Ablauf:
+#   1. Das Regelwerk (AGENTS.md + rules/ + checklists/, dokumentierter
+#      Mindestumfang) gebuendelt unter <ziel>/.ddd-harness/ ablegen; die
+#      relative Struktur bleibt erhalten, damit alle internen Verweise gelten.
+#   2. Eine schlanke <ziel>/AGENTS.md an der Wurzel auf .ddd-harness/AGENTS.md
+#      verweisen lassen.
+#   3. Das fiktive Projekt aus evals/fixture/ an die Wurzel legen.
 #
 # Aufruf:
 #   evals/init-fixture.sh <ZIELVERZEICHNIS> [OPTIONEN]
 #
 # Optionen:
-#   --force     ein vorhandenes, nicht leeres Zielverzeichnis ueberschreiben
-#   --no-git    kein "git init" im Zielverzeichnis
-#   -h|--help   diese Hilfe anzeigen
+#   --with-hilfen  zusaetzlich decisions/ patterns/ anti-patterns/ examples/
+#                  sources/ bereitstellen (ergaenzende, optionale Hilfen)
+#   --force        ein vorhandenes, nicht leeres Zielverzeichnis ueberschreiben
+#   --no-git       kein "git init" im Zielverzeichnis
+#   -h|--help      diese Hilfe anzeigen
 
 set -euo pipefail
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "$script_dir/.." && pwd)"
 fixture_dir="$script_dir/fixture"
+harness_dir="${DDD_HARNESS_DIR:-.ddd-harness}"
 
 usage() {
     awk 'NR>=3 { if ($0 !~ /^#/) exit; sub(/^# ?/, ""); print }' "${BASH_SOURCE[0]}"
@@ -28,10 +34,12 @@ usage() {
 
 force=0
 do_git=1
+with_hilfen=0
 target=""
 
 while (($#)); do
     case "$1" in
+        --with-hilfen) with_hilfen=1 ;;
         --force) force=1 ;;
         --no-git) do_git=0 ;;
         -h|--help) usage; exit 0 ;;
@@ -62,21 +70,37 @@ fi
 mkdir -p "$target"
 target="$(cd "$target" && pwd)"
 
-# Bestandteile des Regelwerks, die in ein Ziel-Repo gehoeren.
-ruleset_dirs=(rules checklists decisions patterns anti-patterns examples sources)
+# Dokumentierter Mindestumfang; die Hilfen sind optional (--with-hilfen).
+ruleset_dirs=(rules checklists)
+if [[ "$with_hilfen" -eq 1 ]]; then
+    ruleset_dirs+=(decisions patterns anti-patterns examples sources)
+fi
 
-# 1. AGENTS.target.md wird im Ziel-Repo zu AGENTS.md.
-cp "$repo_root/AGENTS.target.md" "$target/AGENTS.md"
-
-# 2. Regelwerk unter denselben relativen Pfaden bereitstellen.
+# 1. Regelwerk gebuendelt unter .ddd-harness/ ablegen. AGENTS.target.md und die
+#    Regeldateien behalten ihre relative Struktur, damit alle internen Verweise
+#    (../sources/..., ../../rules/...) gueltig bleiben.
+harness_path="$target/$harness_dir"
+mkdir -p "$harness_path"
+cp "$repo_root/AGENTS.target.md" "$harness_path/AGENTS.md"
 for d in "${ruleset_dirs[@]}"; do
     if [[ -d "$repo_root/$d" ]]; then
-        mkdir -p "$target/$d"
-        cp -R "$repo_root/$d/." "$target/$d/"
+        mkdir -p "$harness_path/$d"
+        cp -R "$repo_root/$d/." "$harness_path/$d/"
     fi
 done
 
-# 3. Fiktives Projekt darueberlegen.
+# 2. Schlanke Wurzel-AGENTS.md, die auf das gebuendelte Regelwerk verweist.
+cat > "$target/AGENTS.md" <<EOF
+# Agentenanweisungen
+
+Die verbindlichen DDD-Arbeitsanweisungen fuer dieses Repository stehen in
+[$harness_dir/AGENTS.md]($harness_dir/AGENTS.md). Lies sie zuerst und wende sie an.
+
+Das zugehoerige Regelwerk (Regeln, Prueflisten und optionale Hilfen) liegt unter
+\`$harness_dir/\`.
+EOF
+
+# 3. Fiktives Projekt an die Wurzel legen.
 if [[ -d "$fixture_dir" ]]; then
     cp -R "$fixture_dir/." "$target/"
 fi
@@ -91,8 +115,8 @@ if [[ "$do_git" -eq 1 ]] && command -v git >/dev/null 2>&1; then
 fi
 
 printf 'Fixture-Repo aufgesetzt: %s\n' "$target"
-printf '  AGENTS.md + %s\n' "${ruleset_dirs[*]}"
-printf '  Fiktives Projekt: domain/, src/, BUILD.md\n'
+printf '  Wurzel: AGENTS.md (Verweis) + fiktives Projekt (domain/, src/, BUILD.md)\n'
+printf '  %s/: AGENTS.md + %s\n' "$harness_dir" "${ruleset_dirs[*]}"
 printf '\nSzenarien (Pruefmassstab, NICHT im Ziel-Repo): %s/scenarios/\n' "$script_dir"
 printf 'Naechster Schritt: einen Code-Agenten mit Arbeitsverzeichnis\n'
 printf '  %s\n' "$target"
