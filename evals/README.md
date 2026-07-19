@@ -135,26 +135,29 @@ zeigt, dass der Effekt szenarioabhängig ist:
   (`analysis-only`), ohne Regelwerk 0/3: Die regellosen Läufe implementierten die
   in der Domänendoku bewusst offengelassene Zuteilungsregel (FIFO) als konkreten
   Vorschlag, statt zu gaten. Genau das verhindert `DDD-READY-001`.
-- **004 Über-Anwendung — erst nach Verschärfung aussagekräftig.** Frühere Fassung
-  (Notizfeld): je 3/3, kein Effekt (triviale Attribute werden nicht
-  überarchitekturiert). Verschärfte Fassung (Bestandshistorie, die zu Event
-  Sourcing verleitet — Kontrast zur Fallstudie, wo ein echter Downstream-Kontext
-  auf ein Ereignis reagiert, hier aber niemand): **mit Regelwerk 3/3, ohne 0/3.**
-  Ohne Regelwerk entstanden ein Domänenereignis ohne Konsument bzw. eine
-  unbegrenzte Historie samt neuer Invariante im Aggregat. Vorbehalt: Da die Fixture
-  keine `Wareneingang`-Operation und keine Reservierungsidentität kennt, gaten die
-  Regelwerk-Läufe zu `analysis-only`, statt aktiv ein Lesemodell zu wählen — eine
-  reinere Prüfung braucht eine reichere Fixture. (Der Konsens flaggte dabei einen
-  Fall als PRÜFEN, weil Signal-Assert die in der Folgezeile deklarierte Bereitschaft
-  nicht las — Extraktion und 004-Rubrik nachkalibriert.) Die Fixture wurde
-  daraufhin angereichert — `wareneingangVerbuchen` und Reservierungen mit
-  Identität (`ReservierungId`) —, sodass 004 den Auftrag trägt und rein die
-  Über-Anwendung prüft; ein erneuter Lauf auf der reicheren Fixture steht aus.
+- **004 Über-Anwendung — diskriminierend, aber Readiness-Gating dominiert.**
+  Frühere Fassung (Notizfeld): je 3/3, kein Effekt. Verschärfte Fassung
+  (Bestandshistorie, die zu Event Sourcing verleitet — Kontrast zur Fallstudie, wo
+  ein echter Downstream-Kontext auf ein Ereignis reagiert, hier aber niemand). Nach
+  Anreicherung der Fixture (`wareneingangVerbuchen` + Reservierungsidentität) und
+  erneutem Lauf: **004 mit Regelwerk 2/3, ohne 0/3** — bei gleichzeitiger Kontrolle
+  **002 weiterhin 3/3 vs 0/3** (die Anreicherung hat das Readiness-Gate nicht
+  entwertet). Ohne Regelwerk legten alle drei die Historie ins Aggregat (teils mit
+  neuer Invariante) bzw. führten Domänenereignisse ohne Konsument ein. Mit Regelwerk
+  gaten zwei zu `analysis-only`; ein dritter (A-2) empfahl jedoch selbst
+  Domänenereignisse für den reinen Lesefall — der Konsens flaggte ihn als PRÜFEN
+  (Judges 1/2 FAIL, Signal PASS). Zwei Einsichten: (1) Der dominante Hebel des
+  Regelwerks ist das **Readiness-Gating** — bei jeder Unterbestimmtheit gatet der
+  Agent, sodass reine Über-Anwendung schwer isolierbar bleibt. (2) `DDD-CORE-001`
+  schützt nicht lückenlos: auch mit Regelwerk kann ein Agent Ereignisse für einen
+  Lesefall empfehlen. Judge-Panel und `consensus.sh` verdienten sich hier ihren
+  Platz (echte Judge-Uneinigkeit auf den Grenzfällen, per Mehrheit aufgelöst).
 
 Lehre: Der Nutzen des Regelwerks liegt dort, wo das Basismodell ohne explizite
-Leitplanke fehlgeht (eine fehlende Fachregel erfinden), nicht bei Aufgaben, die es
-schon beherrscht. Aussagekräftige Szenarien zielen auf diese Lücke. (Alle Verdikte
-kamen mit Konfidenz „hoch" — die Ebenen stimmten überein.)
+Leitplanke fehlgeht (eine fehlende Fachregel erfinden oder überarchitekturieren),
+nicht bei Aufgaben, die es schon beherrscht. Aussagekräftige Szenarien zielen auf
+diese Lücke. (Die meisten Verdikte kamen mit Konfidenz „hoch"; genuine Grenzfälle
+markierte der Konsens korrekt als PRÜFEN zur menschlichen Sichtung.)
 
 ## Verifikation (kombiniert)
 
