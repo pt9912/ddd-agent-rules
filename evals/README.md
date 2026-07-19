@@ -27,6 +27,13 @@ geprüft.
 - `run-scenario.sh` — setzt aus einer Wrapper-Vorlage, dem `## Aufgabe`-Block
   eines Szenarios und den Zielpfaden den fertigen Agenten-Prompt zusammen
   (Ausgabe auf stdout).
+- `Dockerfile` + `docker-verify.sh` + `verify/` — die **ausführbare Verifikation**
+  (Ebene 1) für code-erzeugende Szenarien: ein JDK-Image mit den versteckten
+  Referenztests kompiliert und prüft die vom Agenten implementierte Änderung im
+  Ziel-Repo. Reproduzierbar containerisiert (Basis per Digest gepinnt), wie
+  `doc-check`; der Referenztest steckt im Image, nie im Ziel-Repo.
+- `Makefile` — die Eval-Ziele (`init`, `run`, `grade`, `image`, `verify`),
+  getrennt vom Wurzel-`Makefile`, das nur dieses Regelwerk-Repo validiert.
 - `init-fixture.sh` — setzt aus dem Regelwerk und `fixture/` ein Ziel-Repo im
   angegebenen Verzeichnis zusammen. Das Regelwerk landet gebündelt unter
   `.ddd-harness/` (dokumentierter Mindestumfang: `AGENTS.md` + `rules/` +
@@ -48,18 +55,27 @@ Layout des erzeugten Ziel-Repos:
 
 ## Ablauf
 
+Der gesamte Ablauf ist über `make` steuerbar:
+
 ```sh
-# 1. Ziel-Repo im angegebenen Verzeichnis aufsetzen
-./evals/init-fixture.sh /pfad/zum/ziel       # oder: make eval-init DIR=/pfad/zum/ziel
+# 1. Ziel-Repo aufsetzen
+make -C evals init DIR=/pfad/ziel                 # ARGS=--with-hilfen für die Hilfen
 
-# 2. Prompt für ein Szenario zusammensetzen (Auftrag aus dem Szenario,
-#    Wrapper aus prompts/) und einem Code-Agenten im Ziel-Repo geben.
-#    Für den Ablationsarm ohne Regelwerk: --ohne-regelwerk
-./evals/run-scenario.sh evals/scenarios/001-*.md /pfad/zum/ziel /pfad/out/A-1.md
+# 2. Agenten-Prompt zusammensetzen (Auftrag aus Szenario, Wrapper aus prompts/)
+make -C evals run SCENARIO=scenarios/001-*.md DIR=/pfad/ziel OUT=/pfad/out/A-1.md
+#   Ablationsarm ohne Regelwerk: ARM=ohne
 
-# 3. Antwort(en) gegen den ```grading-Block des Szenarios graden
-./evals/grade.sh evals/scenarios/001-*.md /pfad/out/A-1.md /pfad/out/A-2.md
+# 3a. Analyse-Szenarien: Signal-Assert-Grading (+ LLM-Judge, s. u.)
+make -C evals grade SCENARIO=scenarios/001-*.md OUT="/pfad/out/A-1.md /pfad/out/A-2.md"
+
+# 3b. Code-Szenarien (z. B. 003): ausführbare Verifikation im Container
+make -C evals image                               # einmalig das JDK-Image bauen
+make -C evals verify DIR=/pfad/ziel SCENARIO=003  # compile + Referenztest -> PASS/FAIL
 ```
+
+Die Eval-Ziele liegen bewusst in `evals/Makefile`, getrennt vom Wurzel-`Makefile`
+(das nur dieses Regelwerk-Repo validiert). Die `SCENARIO=`-Pfade sind relativ zu
+`evals/`, weil `make -C evals` dort ausgeführt wird.
 
 Den `judge.md`-Prompt (Platzhalter `{{szenario}}`, `{{antworten}}`) füllt man mit
 dem Szenariopfad und der Liste der Antwortdateien und gibt ihn einem separaten
