@@ -135,9 +135,12 @@ zeigt, dass der Effekt szenarioabhängig ist:
   (`analysis-only`), ohne Regelwerk 0/3: Die regellosen Läufe implementierten die
   in der Domänendoku bewusst offengelassene Zuteilungsregel (FIFO) als konkreten
   Vorschlag, statt zu gaten. Genau das verhindert `DDD-READY-001`.
-- **004 Über-Anwendung — kein messbarer Effekt.** Mit und ohne Regelwerk je 3/3:
-  Ein starkes Basismodell bläht ein triviales Notizfeld ohnehin nicht mit
-  Ereignissen oder Aggregaten auf.
+- **004 (frühere Fassung: Notizfeld) — kein messbarer Effekt.** Mit und ohne
+  Regelwerk je 3/3: Ein triviales Notizfeld wird ohnehin nicht überarchitekturiert.
+  Deshalb wurde 004 zu einem echten Verführungstest verschärft — eine
+  Bestandshistorie, die zu Event Sourcing verleitet, obwohl ein Lesemodell genügt
+  (der Kontrast zur Fallstudie: dort reagiert ein echter Downstream-Kontext auf ein
+  Ereignis, hier gibt es keinen Konsumenten).
 
 Lehre: Der Nutzen des Regelwerks liegt dort, wo das Basismodell ohne explizite
 Leitplanke fehlgeht (eine fehlende Fachregel erfinden), nicht bei Aufgaben, die es
