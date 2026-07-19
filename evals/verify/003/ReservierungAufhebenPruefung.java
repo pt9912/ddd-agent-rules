@@ -7,12 +7,12 @@ import java.util.UUID;
  *
  * Liegt bewusst NICHT im Fixture-Repo: Der Agent implementiert die Änderung im
  * Repo, dieser Test prüft sie objektiv gegen die Invarianten. Er wird von
- * evals/verify-exec.sh zusammen mit den lager-Quellen des Ziel-Repos kompiliert
- * und ausgeführt (plain Java, kein Testframework).
+ * evals/verify-exec bzw. dem Docker-Image zusammen mit den lager-Quellen des
+ * Ziel-Repos kompiliert und ausgeführt (plain Java, kein Testframework).
  *
- * Erwartet eine Methode Lagerartikel.reservierungAufheben(int menge), die die
- * reservierte Menge senkt, INV-LAG-2 wahrt (nie negativ) und nicht-positive
- * Mengen sowie ein Aufheben über die reservierte Menge hinaus ablehnt.
+ * Erwartet eine Methode Lagerartikel.reservierungAufheben(ReservierungId id), die
+ * die benannte Reservierung entfernt, die reservierte Menge entsprechend senkt und
+ * eine unbekannte Identität ablehnt.
  */
 public class ReservierungAufhebenPruefung {
 
@@ -30,29 +30,34 @@ public class ReservierungAufhebenPruefung {
         LieferantId lieferant = new LieferantId(UUID.randomUUID());
 
         Lagerartikel a = new Lagerartikel(id, lieferant, 100);
-        a.reservieren(30);
-        pruefe(a.reservierteMenge() == 30, "Vorbedingung: 30 reserviert");
+        ReservierungId r1 = a.reservieren(30);
+        a.reservieren(20);
+        pruefe(a.reservierteMenge() == 50, "Vorbedingung: 50 reserviert (zwei Reservierungen)");
 
-        a.reservierungAufheben(10);
-        pruefe(a.reservierteMenge() == 20, "nach Aufheben(10): 20 reserviert");
+        a.reservierungAufheben(r1);
+        pruefe(a.reservierteMenge() == 20, "nach Aufheben(r1): 20 reserviert");
         pruefe(a.freieMenge() == 80, "freie Menge = 80");
 
-        boolean ueberMengeAbgelehnt = false;
+        boolean unbekanntAbgelehnt = false;
         try {
-            a.reservierungAufheben(999);
+            a.reservierungAufheben(new ReservierungId(UUID.randomUUID()));
         } catch (RuntimeException e) {
-            ueberMengeAbgelehnt = true;
+            unbekanntAbgelehnt = true;
         }
-        pruefe(ueberMengeAbgelehnt, "Aufheben über reservierte Menge abgelehnt (INV-LAG-2)");
-        pruefe(a.reservierteMenge() == 20, "Zustand nach Ablehnung unverändert");
+        pruefe(unbekanntAbgelehnt, "Aufheben einer unbekannten ReservierungId wird abgelehnt");
+        pruefe(a.reservierteMenge() == 20, "Zustand nach abgelehntem Aufheben unveraendert");
 
-        boolean nichtPositivAbgelehnt = false;
+        boolean doppeltAbgelehnt = false;
         try {
-            a.reservierungAufheben(0);
+            a.reservierungAufheben(r1);
         } catch (RuntimeException e) {
-            nichtPositivAbgelehnt = true;
+            doppeltAbgelehnt = true;
         }
-        pruefe(nichtPositivAbgelehnt, "Aufheben(0) abgelehnt");
+        pruefe(doppeltAbgelehnt, "erneutes Aufheben derselben Reservierung wird abgelehnt");
+
+        a.wareneingangVerbuchen(50);
+        pruefe(a.verfuegbareMenge() == 150, "nach Wareneingang(50): verfuegbar 150");
+        pruefe(a.freieMenge() == 130, "freie Menge = 130");
 
         if (fehler > 0) {
             System.out.println("VERIFIKATION FEHLGESCHLAGEN: " + fehler + " Fehler");

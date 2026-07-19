@@ -146,7 +146,10 @@ zeigt, dass der Effekt szenarioabhängig ist:
   Regelwerk-Läufe zu `analysis-only`, statt aktiv ein Lesemodell zu wählen — eine
   reinere Prüfung braucht eine reichere Fixture. (Der Konsens flaggte dabei einen
   Fall als PRÜFEN, weil Signal-Assert die in der Folgezeile deklarierte Bereitschaft
-  nicht las — Extraktion und 004-Rubrik nachkalibriert.)
+  nicht las — Extraktion und 004-Rubrik nachkalibriert.) Die Fixture wurde
+  daraufhin angereichert — `wareneingangVerbuchen` und Reservierungen mit
+  Identität (`ReservierungId`) —, sodass 004 den Auftrag trägt und rein die
+  Über-Anwendung prüft; ein erneuter Lauf auf der reicheren Fixture steht aus.
 
 Lehre: Der Nutzen des Regelwerks liegt dort, wo das Basismodell ohne explizite
 Leitplanke fehlgeht (eine fehlende Fachregel erfinden), nicht bei Aufgaben, die es

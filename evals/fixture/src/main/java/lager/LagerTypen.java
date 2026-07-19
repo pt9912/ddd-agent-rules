@@ -11,6 +11,14 @@ record LagerartikelId(UUID wert) {
 record LieferantId(UUID wert) {
 }
 
+/** Identität einer Reservierung. */
+record ReservierungId(UUID wert) {
+}
+
+/** Eine über ihre Identität unterscheidbare Reservierung einer Menge. */
+record Reservierung(ReservierungId id, int menge) {
+}
+
 /** Fachliche Ablehnung einer Domänenoperation (kein technischer Fehler). */
 class FachlicheAblehnung extends RuntimeException {
     FachlicheAblehnung(String nachricht) {
