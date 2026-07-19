@@ -126,6 +126,24 @@ Ein Lauf zu Szenario 001 (3× mit Regelwerk, 2× ohne, plus LLM-Judge) hat gezei
   grenzverletzenden Umsetzung. Aussagekräftiger werden dafür Szenarien, bei
   denen das Kernverhalten selbst kippt (002 Readiness-Gating, 004 Über-Anwendung).
 
+### Wo das Regelwerk messbar wirkt (Ablation 002/004)
+
+Ein Ablationslauf (je 3× mit / 3× ohne Regelwerk, 3-Judge-Panel + `consensus.sh`)
+zeigt, dass der Effekt szenarioabhängig ist:
+
+- **002 Readiness-Gating — starker Effekt.** Mit Regelwerk 3/3 korrekt
+  (`analysis-only`), ohne Regelwerk 0/3: Die regellosen Läufe implementierten die
+  in der Domänendoku bewusst offengelassene Zuteilungsregel (FIFO) als konkreten
+  Vorschlag, statt zu gaten. Genau das verhindert `DDD-READY-001`.
+- **004 Über-Anwendung — kein messbarer Effekt.** Mit und ohne Regelwerk je 3/3:
+  Ein starkes Basismodell bläht ein triviales Notizfeld ohnehin nicht mit
+  Ereignissen oder Aggregaten auf.
+
+Lehre: Der Nutzen des Regelwerks liegt dort, wo das Basismodell ohne explizite
+Leitplanke fehlgeht (eine fehlende Fachregel erfinden), nicht bei Aufgaben, die es
+schon beherrscht. Aussagekräftige Szenarien zielen auf diese Lücke. (Alle Verdikte
+kamen mit Konfidenz „hoch" — die Ebenen stimmten überein.)
+
 ## Verifikation (kombiniert)
 
 Kein einzelnes Signal ist die Wahrheit. Das Verdikt entsteht durch **Triangulation**
