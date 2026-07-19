@@ -52,18 +52,25 @@ public void verarbeiten(OrderConfirmedV1 nachricht) {
     transaktionen.ausfuehren(() -> {
         if (eingangsbuch.istVerarbeitet(nachricht.eventId())) return;
 
+        ExterneBestellungId bestellungId = new ExterneBestellungId(nachricht.orderId());
+        if (lieferauftraege.existiertFuer(bestellungId)) {
+            klaerungen.melden(new BestellungMehrfachBestaetigt(bestellungId, nachricht.eventId()));
+            eingangsbuch.alsVerarbeitetMarkieren(nachricht.eventId());
+            return;
+        }
+
         Lieferauftrag lieferauftrag = Lieferauftrag.ausBestaetigterBestellung(
-                new ExterneBestellungId(nachricht.orderId()),
+                bestellungId,
                 adressMapper.abbilden(nachricht.deliveryAddress()),
                 positionsMapper.abbilden(nachricht.lines()));
 
-        lieferauftraege.anlegenFallsNichtVorhanden(lieferauftrag);
+        lieferauftraege.anlegen(lieferauftrag);
         eingangsbuch.alsVerarbeitetMarkieren(nachricht.eventId());
     });
 }
 ```
 
-Das Anlegen des Lieferauftrags und das Markieren der `eventId` erfolgen atomar. Zusätzlich verhindert die externe Bestell-ID, dass zwei verschiedene Ereignis-IDs versehentlich zwei Lieferaufträge für dieselbe Bestellung erzeugen.
+Das Anlegen des Lieferauftrags und das Markieren der `eventId` erfolgen atomar. Trifft eine abweichende `eventId` auf eine bereits belieferte Bestellung, entsteht statt eines zweiten Lieferauftrags ein sichtbarer Konfliktbefund; die externe Bestell-ID verhindert so, dass zwei verschiedene Ereignis-IDs zwei Lieferaufträge für dieselbe Bestellung erzeugen.
 
 ## Verantwortungsgrenze
 

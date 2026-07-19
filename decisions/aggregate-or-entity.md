@@ -4,7 +4,8 @@
    - Nein: Ziehe ein Wertobjekt in Betracht.
    - Ja: Fahre fort.
 2. Schützt es gemeinsam mit anderen Objekten eine Invariante?
-   - Nein: Es kann eine Entität innerhalb eines bestehenden Aggregats sein.
+   - Nein, und es hat einen eigenen Lebenszyklus und ein eigenes Repository: Es ist eine eigenständige Aggregatwurzel eines einzelentitären Aggregats.
+   - Nein, und sein Lebenszyklus gehört zu einem anderen Aggregat: Es kann eine Entität innerhalb dieses bestehenden Aggregats sein.
    - Ja: Fahre fort.
 3. Müssen sich diese Objekte atomar ändern?
    - Ja: Definiere eine Aggregatgrenze.

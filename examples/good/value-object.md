@@ -5,6 +5,8 @@ In einem Vertriebskontext ist ein `Preis` als nicht negativer Betrag definiert. 
 ```java
 public record Preis(BigDecimal betrag, Currency waehrung) {
     public Preis {
+        Objects.requireNonNull(betrag, "Betrag erforderlich");
+        Objects.requireNonNull(waehrung, "Währung erforderlich");
         if (betrag.signum() < 0) {
             throw new IllegalArgumentException("Preis darf nicht negativ sein");
         }
