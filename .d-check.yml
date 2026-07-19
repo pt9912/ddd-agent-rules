@@ -1,0 +1,52 @@
+scan:
+  roots: ["."]
+
+modules: [links, anchors, ids, matrix, codepaths, spans, hostpaths]
+
+ids:
+  patterns:
+    - regex: 'DDD-[A-Z]+-\d{3}'
+      target: rules/
+      link-policy: prose
+
+matrix:
+  classes:
+    - {name: einstieg, paths: [README.md, AGENTS.md, AGENTS.target.md, INHALT.md]}
+    - {name: projektsteuerung, paths: ["docs/*.md"]}
+    - {name: regeln, paths: ["rules/*.md"]}
+    - {name: hilfen, paths: ["decisions/*.md", "patterns/*.md", "checklists/*.md"]}
+    - {name: beispiele, paths: ["anti-patterns/*.md", "examples/**/*.md"]}
+    - {name: quellen, paths: ["sources/*.md"]}
+    - {name: historie, paths: [CHANGELOG.md, LICENSE.de.md]}
+  rules:
+    - {from: regeln, to: einstieg, allow: false}
+    - {from: regeln, to: hilfen, allow: false}
+    - {from: regeln, to: beispiele, allow: false}
+    - {from: hilfen, to: einstieg, allow: false}
+    - {from: hilfen, to: projektsteuerung, allow: false}
+    - {from: hilfen, to: beispiele, allow: false}
+    - {from: beispiele, to: einstieg, allow: false}
+    - {from: beispiele, to: projektsteuerung, allow: false}
+    - {from: quellen, to: einstieg, allow: false}
+    - {from: quellen, to: projektsteuerung, allow: false}
+    - {from: quellen, to: regeln, allow: false}
+    - {from: quellen, to: hilfen, allow: false}
+    - {from: quellen, to: beispiele, allow: false}
+  status: {forbidden: [draft, deprecated, superseded, retired]}
+  exclude-sections: [Historie, Geschichte]
+
+codepaths:
+  roots:
+    - docs
+    - rules
+    - decisions
+    - patterns
+    - anti-patterns
+    - checklists
+    - examples
+    - sources
+    - scripts
+    - tests
+
+hostpaths:
+  prefixes: [home, Users, Development, mnt]

@@ -1,0 +1,57 @@
+---
+id: DDD-EVT-001
+title: Tatsachen als Domänenereignisse veröffentlichen
+category: domain-event
+priority: recommended
+status: active
+applies_to:
+  - implementation
+  - refactoring
+  - code-review
+---
+
+# Tatsachen als Domänenereignisse veröffentlichen
+
+## Absicht
+
+Mache wichtige fachliche Ergebnisse ausdrücklich und entkopple Reaktionen innerhalb eines Bounded Contexts.
+
+## Regel
+
+Ein Domänenereignis SOLLTE eine bedeutsame, bereits eingetretene Tatsache darstellen.
+
+## Empfohlenes Verhalten
+
+- SOLLTE Ereignisse in der Vergangenheitsform benennen.
+- SOLLTE stabile Domänenidentifikatoren und relevante Tatsachen enthalten.
+- SOLLTE ein Ereignis erst erfassen, nachdem das Aggregat den Zustandsübergang abgeschlossen und seine Invarianten bewahrt hat.
+- SOLLTE festlegen, ob lokale Handler vor oder nach dem Commit der auslösenden Transaktion ausgeführt werden.
+- SOLLTE Domänenereignisse an Kontextgrenzen in Integrationsereignisse übersetzen.
+- SOLLTE eine ausgehende Integrationsnachricht atomar mit dem fachlichen Zustand persistieren, wenn zuverlässige kontextübergreifende Zustellung erforderlich ist.
+
+## Abgeratenes Verhalten
+
+- SOLLTE NICHT Ereignisse wie Befehle benennen.
+- SOLLTE NICHT Domänenereignisse als Ersatz für unmittelbares Aggregatverhalten verwenden.
+- SOLLTE NICHT interne Domänentypen über Grenzen von Bounded Contexts hinweg veröffentlichen.
+- SOLLTE NICHT ein Integrationsereignis vor dem Commit der auslösenden Transaktion veröffentlichen.
+- SOLLTE NICHT unmittelbar aus einem Aggregat veröffentlichen.
+- SOLLTE NICHT ohne Infrastrukturgarantien eine Genau-einmal-Zustellung annehmen.
+
+## Entscheidungskriterien
+
+Verwende ein Ereignis, wenn eine fachliche Tatsache in der ubiquitären Sprache bedeutsam ist und ausdrückliche entkoppelte Reaktionen, Koordination oder Nachvollziehbarkeit einen Nutzen bieten. Mehrere Reaktionen sind nicht erforderlich.
+
+## Prüfung
+
+- Ist dies eine Tatsache in der Vergangenheitsform?
+- Ist sie für Fachexperten bedeutsam?
+- Ist sie intern oder kontextübergreifend?
+- Kann ein externer Empfänger eine Änderung beobachten, die später zurückgerollt wird?
+- Kann eine bestätigte Änderung ihre ausgehende Integrationsnachricht verlieren?
+- Sind Handler dort idempotent, wo es erforderlich ist?
+
+## Quellen
+
+- [EVANS-DDD-REFERENCE](../sources/references.md#evans-ddd-reference)
+- [MS-DOMAIN-EVENTS](../sources/references.md#ms-domain-events)
