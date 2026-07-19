@@ -19,6 +19,9 @@
 - Repository-spezifische Agentenanweisungen von der auslieferbaren Ziel-Repo-Vorlage getrennt und mit `DDD-READY-001` sowie einer Readiness-Prüfliste ein verbindliches Gate für fachliche Codeänderungen eingeführt.
 - Die README auf Nutzen, unmittelbar mögliche Schritte, Motivation, Kerngedanke und Vertrauensmechanismen ausgerichtet und ihre Hauptstruktur im Richtlinienvertrag abgesichert.
 - Die Regeltitel im Dokumentindex an die kanonischen Frontmatter-Titel angeglichen, die Titelkonsistenz im Validator automatisiert erzwungen und die Vertragsterminologie des Ziel-Repositorys vereinheitlicht (`Anwendungs-Handler`).
+- Normative Regeln zu Aggregat-Transaktionsgrenze, optimistischer Nebenläufigkeit, Vertragsversionierung, Outbox-Veröffentlichung und Schichtreinheit geschärft sowie Subdomäne und Bounded Context abgegrenzt.
+- Den Entscheidungsbaum um das einzelentitäre Aggregat, das Preis-Beispiel um eine Null-Prüfung und die Fallstudie um den geforderten Konfliktbefund ergänzt.
+- Die SDP-Referenzrichtung um die bislang fehlenden Kanten (Projektsteuerung→Einstieg, nachgeordnete Klassen→Quellen) vervollständigt und den Validator gegen leere Regelabschnitte sowie dateiübergreifende Quellen-Fehlzuordnung abgesichert.
 
 ## 0.1.0
 

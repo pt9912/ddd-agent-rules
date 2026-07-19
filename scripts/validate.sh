@@ -37,6 +37,17 @@ front_matter_has_key() {
     ' "$file"
 }
 
+count_bullets() {
+    local heading="$1"
+    local file="$2"
+    awk -v heading="## $heading" '
+        $0 == heading { inside = 1; next }
+        /^## / { inside = 0 }
+        inside && /^- / { n++ }
+        END { print n + 0 }
+    ' "$file"
+}
+
 rule_ids="$validation_tmp/rule-ids"
 : > "$rule_ids"
 superseded_rules="$validation_tmp/superseded-rules"
@@ -105,6 +116,10 @@ for rule_file in "$project_root"/rules/*.md; do
     esac
 
     printf '%s\n' "$rule_id" >> "$rule_ids"
+
+    [[ "$(count_bullets "$required_heading" "$rule_file")" -ge 1 ]] || fail "$relative_file: Abschnitt '$required_heading' enthält keine Regelpunkte"
+    [[ "$(count_bullets "$prohibited_heading" "$rule_file")" -ge 1 ]] || fail "$relative_file: Abschnitt '$prohibited_heading' enthält keine Regelpunkte"
+    [[ "$(count_bullets Quellen "$rule_file")" -ge 1 ]] || fail "$relative_file: Abschnitt 'Quellen' enthält keine Quellenangaben"
 
     for section in Absicht Regel "$required_heading" "$prohibited_heading" Entscheidungskriterien Prüfung Quellen; do
         grep -q "^## $section$" "$rule_file" || fail "$relative_file enthält den Abschnitt '$section' nicht"
@@ -180,7 +195,7 @@ while IFS= read -r source_line; do
     expected_anchor="$(printf '%s' "$source_id" | tr '[:upper:]' '[:lower:]')"
     [[ "$source_anchor" == "$expected_anchor" ]] || fail "Quelle $source_id verweist auf den unerwarteten Anker '$source_anchor'"
     grep -q "^### $source_id$" "$project_root/sources/references.md" || fail "Quelle $source_id fehlt in sources/references.md"
-done < <(sed -n '/^## Quellen$/,/^## /{/^- \[/p;}' "$project_root"/rules/*.md)
+done < <(sed -sn '/^## Quellen$/,/^## /{/^- \[/p;}' "$project_root"/rules/*.md)
 
 if ! grep -qE '^[-] .+\]\(https://[^)]+\)$' "$project_root/sources/references.md"; then
     fail "sources/references.md muss direkte HTTPS-Links enthalten"

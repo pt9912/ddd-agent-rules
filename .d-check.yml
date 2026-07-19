@@ -32,6 +32,10 @@ matrix:
     - {from: quellen, to: regeln, allow: false}
     - {from: quellen, to: hilfen, allow: false}
     - {from: quellen, to: beispiele, allow: false}
+    - {from: projektsteuerung, to: einstieg, allow: false}
+    - {from: projektsteuerung, to: quellen, allow: false}
+    - {from: hilfen, to: quellen, allow: false}
+    - {from: beispiele, to: quellen, allow: false}
   status: {forbidden: [draft, deprecated, superseded, retired]}
   exclude-sections: [Historie, Geschichte]
 
