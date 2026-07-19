@@ -26,8 +26,8 @@ Die Anwendungsschicht MUSS Domänenobjekte und Infrastruktur-Ports orchestrieren
 - MUSS Domänenverhalten aufrufen, statt Domänenzustand zu manipulieren.
 - MUSS Repositories und Transaktionsgrenzen koordinieren.
 - MUSS ausgehende Integrationsnachrichten mit der fachlichen Transaktion persistieren, wenn zuverlässige Zustellung erforderlich ist.
-- MUSS Integrationsnachrichten erst nach dem Commit veröffentlichen oder an einen transaktionalen Outbox-Publisher übergeben.
-- MUSS Authentifizierung, grobe Zugriffskontrolle und die Reihenfolge des Anwendungsfalls durchsetzen.
+- MUSS Integrationsnachrichten erst nach dem Commit veröffentlichen und sie für zuverlässige Zustellung ausschließlich über einen aus der persistierten Outbox lesenden Publisher zustellen; ein direkter Versand nach dem Commit bleibt der Best-Effort-Zustellung vorbehalten.
+- MUSS die grobe Zugriffskontrolle und die Reihenfolge des Anwendungsfalls durchsetzen und eine am Rand erfolgte Authentifizierung voraussetzen.
 - MUSS domänenrelevante Akteurs- oder Berechtigungsinformationen an die Domäne übergeben, wenn die Autorisierung vom fachlichen Zustand oder von fachlichen Richtlinien abhängt.
 
 ## Verbotenes Verhalten
@@ -41,7 +41,7 @@ Die Anwendungsschicht MUSS Domänenobjekte und Infrastruktur-Ports orchestrieren
 
 ## Entscheidungskriterien
 
-Verwende Anwendungsdienste für Orchestrierung, Authentifizierung und Zugriffskontrolle auf Anwendungsfälle. Verschiebe zustandsabhängige Berechtigungen und andere fachliche Entscheidungen in das Domänenmodell.
+Verwende Anwendungsdienste für Orchestrierung und die Zugriffskontrolle auf Anwendungsfälle. Verschiebe zustandsabhängige Berechtigungen und andere fachliche Entscheidungen in das Domänenmodell.
 
 ## Prüfung
 

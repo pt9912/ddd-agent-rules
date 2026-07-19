@@ -26,14 +26,14 @@ Jede Zustandsänderung innerhalb eines Aggregats MUSS über die Aggregatwurzel e
 - MUSS das Aggregat klein halten.
 - MUSS andere Aggregate über ihre Identität referenzieren.
 - MUSS das Aggregat als eine Konsistenzeinheit persistieren.
-- MUSS Eventual Consistency über Aggregatgrenzen hinweg verwenden, soweit dies angemessen ist.
+- MUSS über Aggregatgrenzen hinweg auf Eventual Consistency setzen, statt mehrere Aggregate in einer Transaktion konsistent zu halten.
 
 ## Verbotenes Verhalten
 
 - DARF NICHT untergeordnete Entitäten unmittelbar aktualisieren.
 - DARF NICHT veränderliche Sammlungen offenlegen.
 - DARF NICHT Aggregate aus Datenbank-Navigationseigenschaften aufbauen.
-- DARF NICHT standardmäßig nicht zusammengehörige Aggregate in eine Transaktion laden.
+- DARF NICHT mehrere Aggregatinstanzen in einer einzigen Transaktion verändern.
 
 ## Entscheidungskriterien
 

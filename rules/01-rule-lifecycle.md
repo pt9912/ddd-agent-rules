@@ -55,9 +55,12 @@ Der Status jeder DDD-Regel MUSS ausdrücklich im Front Matter stehen und darf si
 
 ```text
 draft → active → deprecated → superseded → retired
-          │            └────────────────────→ retired
-          └────────────────→ superseded
+  │       │            └────────────────────→ retired
+  │       └────────────────→ superseded
+  └────────────────→ retired
 ```
+
+Ein Entwurf, der ohne Freigabe verworfen wird, kann unmittelbar nach `retired` übergehen; er hatte nie den Status `active` und schützt daher kein bestehendes Verhalten.
 
 Eine Rückkehr von `deprecated`, `superseded` oder `retired` nach `active` ist nur mit einer ausdrücklichen fachlichen Entscheidung, einer Begründung im Änderungsprotokoll und vollständiger erneuter Validierung zulässig.
 

@@ -25,6 +25,7 @@ Jede kontextübergreifende Interaktion MUSS eine ausdrückliche Beziehung und Ü
 - MUSS Upstream-/Downstream-Rollen dokumentieren.
 - MUSS eine Anti-Corruption Layer verwenden, wenn das externe Modell das lokale Modell nicht prägen soll.
 - MUSS stabile Integrationsverträge veröffentlichen.
+- MUSS Integrationsnachrichten versionieren und ausschließlich abwärtskompatibel weiterentwickeln.
 - MUSS Domänenereignisse intern halten, sofern sie nicht bewusst übersetzt werden.
 - MUSS Commit-, Wiederholungs-, Reihenfolge- und Idempotenzsemantik für Integrationsnachrichten definieren, wenn diese das fachliche Verhalten beeinflussen.
 
@@ -45,6 +46,7 @@ Wähle das Integrationsmuster anhand von Eigentümerschaft, Einfluss, Vertrauen 
 - Wo findet die Übersetzung statt?
 - Welches Modell ist maßgeblich?
 - Kann sich jede Seite unabhängig ändern?
+- Ist die Nachricht versioniert und abwärtskompatibel?
 
 ## Quellen
 

@@ -30,7 +30,7 @@ Ein Domänendienst SOLLTE zustandsloses, konzeptübergreifendes Domänenverhalte
 
 - SOLLTE NICHT die gesamte fachliche Logik in Dienste verschieben.
 - SOLLTE NICHT einen Domänendienst als prozedurales Skript verwenden.
-- SOLLTE NICHT Infrastrukturabhängigkeiten in den Domänendienst injizieren.
+- SOLLTE NICHT konkrete Infrastrukturimplementierungen in den Domänendienst injizieren; Domänen-Ports bleiben zulässig.
 
 ## Entscheidungskriterien
 

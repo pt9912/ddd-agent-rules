@@ -36,6 +36,7 @@ Jeder Bounded Context MUSS sein Modell, seine Terminologie und seine fachlichen 
 ## Entscheidungskriterien
 
 Erstelle einen Bounded Context, wenn Terminologie, Regeln, Eigentümerschaft, Lebenszyklus oder Änderungstakt wesentlich voneinander abweichen.
+Unterscheide dabei den Problemraum (Subdomänen wie Kern-, Unterstützungs- und generische Domäne) vom Lösungsraum (Bounded Contexts); eine Subdomäne kann durch einen oder mehrere Bounded Contexts umgesetzt werden.
 
 ## Prüfung
 

@@ -27,7 +27,7 @@ Ein Domänenereignis SOLLTE eine bedeutsame, bereits eingetretene Tatsache darst
 - SOLLTE ein Ereignis erst erfassen, nachdem das Aggregat den Zustandsübergang abgeschlossen und seine Invarianten bewahrt hat.
 - SOLLTE festlegen, ob lokale Handler vor oder nach dem Commit der auslösenden Transaktion ausgeführt werden.
 - SOLLTE Domänenereignisse an Kontextgrenzen in Integrationsereignisse übersetzen.
-- SOLLTE eine ausgehende Integrationsnachricht atomar mit dem fachlichen Zustand persistieren, wenn zuverlässige kontextübergreifende Zustellung erforderlich ist.
+- SOLLTE eine ausgehende Integrationsnachricht atomar mit dem fachlichen Zustand persistieren, wenn zuverlässige kontextübergreifende Zustellung erforderlich ist; die verbindliche Transaktionsführung dafür liegt in der Anwendungsschicht.
 
 ## Abgeratenes Verhalten
 

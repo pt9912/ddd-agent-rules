@@ -26,6 +26,7 @@ Ein Repository SOLLTE um eine Aggregatwurzel und fachliche Anforderungen herum d
 - SOLLTE bei Bedarf domänenspezifische Abfragen anbieten.
 - SOLLTE Repository-Schnittstellen innerhalb oder nahe der Domänen-/Anwendungsgrenze halten.
 - SOLLTE sie in der Infrastruktur implementieren.
+- SOLLTE beim Speichern einer Aggregatwurzel optimistische Nebenläufigkeitskontrolle über eine Version durchsetzen.
 
 ## Abgeratenes Verhalten
 
@@ -43,6 +44,7 @@ Verwende Repositories für persistierte Aggregatwurzeln. Verwende dedizierte Les
 - Arbeitet das Repository mit einer Aggregatwurzel?
 - Sind die Abfrageanforderungen domänenspezifisch?
 - Ist die Persistenz vor der Domäne verborgen?
+- Werden gleichzeitige Änderungen an derselben Aggregatwurzel erkannt?
 
 ## Quellen
 
