@@ -18,6 +18,7 @@
 - Eine durchgängige B2B-Fallstudie zu Aggregatinvarianten, Bestellfreigabe, transaktionaler Outbox, Kontextübersetzung, Idempotenz und den erforderlichen Domänen- und Integrationstests ergänzt.
 - Repository-spezifische Agentenanweisungen von der auslieferbaren Ziel-Repo-Vorlage getrennt und mit `DDD-READY-001` sowie einer Readiness-Prüfliste ein verbindliches Gate für fachliche Codeänderungen eingeführt.
 - Die README auf Nutzen, unmittelbar mögliche Schritte, Motivation, Kerngedanke und Vertrauensmechanismen ausgerichtet und ihre Hauptstruktur im Richtlinienvertrag abgesichert.
+- Die Regeltitel im Dokumentindex an die kanonischen Frontmatter-Titel angeglichen, die Titelkonsistenz im Validator automatisiert erzwungen und die Vertragsterminologie des Ziel-Repositorys vereinheitlicht (`Anwendungs-Handler`).
 
 ## 0.1.0
 

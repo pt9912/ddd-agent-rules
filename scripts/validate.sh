@@ -50,11 +50,18 @@ for rule_file in "$project_root"/rules/*.md; do
     status="$(front_matter_value status "$rule_file")"
     superseded_by="$(front_matter_value superseded_by "$rule_file")"
 
+    title="$(front_matter_value title "$rule_file")"
     [[ "$first_line" == "---" ]] || fail "$relative_file muss mit YAML-Front-Matter beginnen"
     [[ -n "$rule_id" ]] || fail "$relative_file enthält keine id"
-    [[ -n "$(front_matter_value title "$rule_file")" ]] || fail "$relative_file enthält keinen title"
+    [[ -n "$title" ]] || fail "$relative_file enthält keinen title"
     [[ -n "$(front_matter_value category "$rule_file")" ]] || fail "$relative_file enthält keine category"
     front_matter_has_key applies_to "$rule_file" || fail "$relative_file enthält kein applies_to"
+
+    if [[ -n "$rule_id" && -n "$title" ]]; then
+        inhalt_entry="[$rule_id – $title]($relative_file)"
+        grep -Fq -- "$inhalt_entry" "$project_root/INHALT.md" \
+            || fail "$relative_file: Titel fehlt im Dokumentindex oder weicht ab (erwartet: $inhalt_entry)"
+    fi
 
     case "$status" in
         draft|active|deprecated|superseded|retired) ;;

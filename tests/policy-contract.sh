@@ -67,7 +67,7 @@ assert_contains docs/referenzrichtung.md 'Beispiele → Hilfen → Regeln → Qu
 assert_contains docs/referenzrichtung.md 'Projektsteuerung und Regeln DÜRFEN einander referenzieren'
 assert_contains INHALT.md '[DDD-RLC-001 – Den Lebenszyklus von DDD-Regeln ausdrücklich steuern](rules/01-rule-lifecycle.md)'
 assert_contains INHALT.md '[DDD-READY-001 – Fachliche Änderungsbereitschaft vor der Umsetzung herstellen](rules/02-agent-readiness.md)'
-assert_contains INHALT.md '[DDD-REF-001 – In kleinen fachlich sicheren Schritten refaktorieren](rules/16-refactoring.md)'
+assert_contains INHALT.md '[DDD-REF-001 – Schrittweise zu klarerem Domänenverhalten refaktorieren](rules/16-refactoring.md)'
 assert_before AGENTS.md '[rules/01-rule-lifecycle.md]' '[rules/02-agent-readiness.md]'
 assert_before AGENTS.md '[rules/02-agent-readiness.md]' '[rules/03-domain-modeling.md]'
 assert_before AGENTS.target.md '[rules/01-rule-lifecycle.md]' '[rules/02-agent-readiness.md]'

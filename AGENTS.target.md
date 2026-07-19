@@ -55,7 +55,7 @@ Der Agent DARF NICHT:
 - standardmäßig ein gemeinsames Domänenmodell über mehrere Bounded Contexts teilen
 - fachliche Regeln in Infrastrukturcode verschieben
 - etablierte Domänenbegriffe ohne Beleg umbenennen
-- zustandsabhängige fachliche Autorisierung ausschließlich in einem Application Handler belassen
+- zustandsabhängige fachliche Autorisierung ausschließlich in einem Anwendungs-Handler belassen
 - Integrationsnachrichten für noch nicht bestätigte Zustandsänderungen veröffentlichen
 - Regeln mit `draft`, `superseded` oder `retired` als aktive Vorgaben durchsetzen
 - eine `analysis-only`-Aufgabe als sichere fachliche Implementierung abschließen
