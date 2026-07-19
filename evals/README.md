@@ -69,6 +69,26 @@ Layout des erzeugten Ziel-Repos:
 Agenten sind nicht-deterministisch: jedes Szenario **N-mal** laufen lassen und
 die **Pass-Rate** melden, nicht ein einzelnes Ergebnis.
 
+### Grenzen des Signal-Assert (aus einem Ablationslauf)
+
+Ein Lauf zu Szenario 001 (3× mit Regelwerk, 2× ohne, plus LLM-Judge) hat gezeigt:
+
+- Signal-Assert ist zu grob für **semantische** Fragen: Ein Feldname wie
+  `lieferantName` matcht auch, wenn ein Lesemodell-DTO ihn **außerhalb** des
+  Aggregats korrekt verwendet (Falsch-negativ), und ein Substring wie `ready`
+  matcht die zitierte Stufen-Skala statt der **deklarierten** Stufe
+  (Falsch-positiv). Die eigentliche Einbettungsfrage entscheidet der Judge.
+- `pflicht-any` (mindestens eine einschlägige Regel-ID) ist robuster als eine
+  feste ID, weil verschiedene Läufe unterschiedliche, gleich gültige Regeln
+  zitieren (`DDD-AGG-001` vs. `DDD-BC-001`).
+- Der Judge bewertete alle fünf Antworten verhaltensseitig korrekt (mit
+  Regelwerk 3/3, ohne 2/2): Ein starkes Basismodell trifft das Kernverhalten
+  auch ohne Regelwerk. Der messbare Beitrag des Regelwerks lag in den
+  Zusatzdimensionen — deklarierte Bereitschaft/Readiness-Gating, explizite
+  Regel-ID-Nachvollziehbarkeit und das Verweigern der wörtlich
+  grenzverletzenden Umsetzung. Aussagekräftiger werden dafür Szenarien, bei
+  denen das Kernverhalten selbst kippt (002 Readiness-Gating, 004 Über-Anwendung).
+
 ## Warum außerhalb von `make test`
 
 Eine Eval ruft ein LLM auf — nicht-deterministisch und nicht netzfrei. Sie
