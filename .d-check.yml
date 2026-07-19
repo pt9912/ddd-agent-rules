@@ -1,6 +1,8 @@
 scan:
   roots: ["."]
-  ignore: ["evals/**"]
+  # evals/ und templates/ sind nicht-normative, ausliefer­bare Tooling-Artefakte
+  # (Eval-Harness bzw. Zielrepo-Vorlage), nicht Teil des Doku-Graphen dieses Repos.
+  ignore: ["evals/**", "templates/**"]
 
 modules: [links, anchors, ids, matrix, codepaths, spans, hostpaths]
 

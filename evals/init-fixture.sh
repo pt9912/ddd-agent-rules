@@ -17,6 +17,8 @@
 # Optionen:
 #   --with-hilfen  zusaetzlich decisions/ patterns/ anti-patterns/ examples/
 #                  sources/ bereitstellen (ergaenzende, optionale Hilfen)
+#   --with-verify  den Zielrepo-Verifikations-Helfer (templates/ddd-verify) und
+#                  einen Beispiel-Invariantentest (ddd-invariants/) beilegen
 #   --force        ein vorhandenes, nicht leeres Zielverzeichnis ueberschreiben
 #   --no-git       kein "git init" im Zielverzeichnis
 #   -h|--help      diese Hilfe anzeigen
@@ -35,11 +37,13 @@ usage() {
 force=0
 do_git=1
 with_hilfen=0
+with_verify=0
 target=""
 
 while (($#)); do
     case "$1" in
         --with-hilfen) with_hilfen=1 ;;
+        --with-verify) with_verify=1 ;;
         --force) force=1 ;;
         --no-git) do_git=0 ;;
         -h|--help) usage; exit 0 ;;
@@ -105,6 +109,16 @@ if [[ -d "$fixture_dir" ]]; then
     cp -R "$fixture_dir/." "$target/"
 fi
 
+# 4. Optional: den eigenstaendigen Zielrepo-Verifikations-Helfer beilegen.
+if [[ "$with_verify" -eq 1 && -d "$repo_root/templates/ddd-verify" ]]; then
+    mkdir -p "$target/ddd-verify"
+    cp -R "$repo_root/templates/ddd-verify/." "$target/ddd-verify/"
+    if [[ -d "$target/ddd-verify/beispiel" ]]; then
+        mkdir -p "$target/ddd-invariants"
+        cp "$target/ddd-verify/beispiel/"*.java "$target/ddd-invariants/" 2>/dev/null || true
+    fi
+fi
+
 # Optional: git-Repo initialisieren.
 if [[ "$do_git" -eq 1 ]] && command -v git >/dev/null 2>&1; then
     git -C "$target" init -q
@@ -117,6 +131,9 @@ fi
 printf 'Fixture-Repo aufgesetzt: %s\n' "$target"
 printf '  Wurzel: AGENTS.md (Verweis) + fiktives Projekt (domain/, src/, BUILD.md)\n'
 printf '  %s/: AGENTS.md + %s\n' "$harness_dir" "${ruleset_dirs[*]}"
+if [[ "$with_verify" -eq 1 ]]; then
+    printf '  ddd-verify/ + ddd-invariants/ (Zielrepo-Invariantenverifikation)\n'
+fi
 printf '\nSzenarien (Pruefmassstab, NICHT im Ziel-Repo): %s/scenarios/\n' "$script_dir"
 printf 'Naechster Schritt: einen Code-Agenten mit Arbeitsverzeichnis\n'
 printf '  %s\n' "$target"

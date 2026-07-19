@@ -26,6 +26,7 @@
 - Die Eval-Prompts dokumentiert und reproduzierbar gemacht: Wrapper- und Judge-Vorlagen unter `evals/prompts/` (mit/ohne Regelwerk sowie Judge-Rubrik) und `evals/run-scenario.sh`, das den Auftrag aus dem Szenario mit dem Wrapper zu einem fertigen Agenten-Prompt zusammensetzt.
 - Eine ausführbare Verifikationsebene für code-erzeugende Eval-Szenarien ergänzt: ein per Digest gepinntes JDK-Image (`evals/Dockerfile`) kompiliert die vom Agenten implementierte Änderung im Ziel-Repo gegen versteckte Referenztests (`evals/verify/`) und liefert ein objektives PASS/FAIL. Die Eval-Ziele in ein eigenes `evals/Makefile` (`init`, `run`, `grade`, `image`, `verify`) getrennt; das Wurzel-`Makefile` bleibt auf die Regelwerk-Validierung beschränkt.
 - Die Eval-Verifikation zu einer Triangulation kombiniert: jedes Szenario trägt eine objektive Referenzrubrik (`## Referenzlösung`), der Judge arbeitet als adversariales Panel mit maschinenlesbarem Verdikt, und `evals/consensus.sh` führt ausführbaren Test, Panel-Mehrheit und Signal-Assert zu einem Verdikt mit Konfidenz zusammen (Divergenz ⇒ menschliche Sichtung).
+- Einen eigenständigen, ins Ziel-Repo lieferbaren Verifikations-Helfer ergänzt (`templates/ddd-verify/`): ein per Digest gepinntes JDK-Image prüft die Aggregatinvarianten eines Ziel-Repos gegen dessen **eigene** Tests unter `ddd-invariants/` (`make -C ddd-verify verify`), getrennt vom internen Eval-Harness. `init-fixture.sh --with-verify` legt Helfer und Beispieltest bei. `templates/` ist wie `evals/` aus der deterministischen Doku-Prüfung ausgenommen.
 
 ## 0.1.0
 
