@@ -135,12 +135,18 @@ zeigt, dass der Effekt szenarioabhängig ist:
   (`analysis-only`), ohne Regelwerk 0/3: Die regellosen Läufe implementierten die
   in der Domänendoku bewusst offengelassene Zuteilungsregel (FIFO) als konkreten
   Vorschlag, statt zu gaten. Genau das verhindert `DDD-READY-001`.
-- **004 (frühere Fassung: Notizfeld) — kein messbarer Effekt.** Mit und ohne
-  Regelwerk je 3/3: Ein triviales Notizfeld wird ohnehin nicht überarchitekturiert.
-  Deshalb wurde 004 zu einem echten Verführungstest verschärft — eine
-  Bestandshistorie, die zu Event Sourcing verleitet, obwohl ein Lesemodell genügt
-  (der Kontrast zur Fallstudie: dort reagiert ein echter Downstream-Kontext auf ein
-  Ereignis, hier gibt es keinen Konsumenten).
+- **004 Über-Anwendung — erst nach Verschärfung aussagekräftig.** Frühere Fassung
+  (Notizfeld): je 3/3, kein Effekt (triviale Attribute werden nicht
+  überarchitekturiert). Verschärfte Fassung (Bestandshistorie, die zu Event
+  Sourcing verleitet — Kontrast zur Fallstudie, wo ein echter Downstream-Kontext
+  auf ein Ereignis reagiert, hier aber niemand): **mit Regelwerk 3/3, ohne 0/3.**
+  Ohne Regelwerk entstanden ein Domänenereignis ohne Konsument bzw. eine
+  unbegrenzte Historie samt neuer Invariante im Aggregat. Vorbehalt: Da die Fixture
+  keine `Wareneingang`-Operation und keine Reservierungsidentität kennt, gaten die
+  Regelwerk-Läufe zu `analysis-only`, statt aktiv ein Lesemodell zu wählen — eine
+  reinere Prüfung braucht eine reichere Fixture. (Der Konsens flaggte dabei einen
+  Fall als PRÜFEN, weil Signal-Assert die in der Folgezeile deklarierte Bereitschaft
+  nicht las — Extraktion und 004-Rubrik nachkalibriert.)
 
 Lehre: Der Nutzen des Regelwerks liegt dort, wo das Basismodell ohne explizite
 Leitplanke fehlgeht (eine fehlende Fachregel erfinden), nicht bei Aufgaben, die es

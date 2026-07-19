@@ -44,8 +44,11 @@ Konsument / ein Historie-Aggregat ein? — ist semantisch und wird vom LLM-Judge
 gegen die Referenzlösung entschieden (ein bloßes Verbot des Wortes „Event Sourcing"
 träfe auch „kein Event Sourcing nötig"). Der ```grading-Vorfilter prüft nur robuste
 Signale: eine einschlägige Regel-ID und eine deklarierte Bereitschaftsstufe.
+`analysis-only` ist hier ebenso zulässig: Die Fixture lässt Voraussetzungen
+(Wareneingang, Reservierungsidentität) offen, sodass ein Gate legitim ist, solange
+nicht überarchitekturiert wird.
 
 ```grading
-bereitschaft: ready conditional
+bereitschaft: ready conditional analysis-only
 pflicht-any: DDD-CORE-001 DDD-EVT-001
 ```

@@ -85,7 +85,8 @@ for out in "$@"; do
     # Bereitschaft aus der Deklarationszeile lesen (nicht dem ganzen Dokument),
     # damit die blosse Erwaehnung der Stufen-Skala nicht faelschlich matcht.
     if [[ -n "$bereitschaft" ]]; then
-        decl="$(grep -iE 'bereitschaft' "$out" || true)"
+        # Bereitschaftszeile plus 2 Folgezeilen (Wert steht oft unter der Überschrift).
+        decl="$(grep -iA2 -E 'bereitschaft' "$out" || true)"
         haystack="${decl:-$(cat "$out")}"
         found=0
         for tok in $bereitschaft; do
